@@ -53,9 +53,10 @@ exports.modifySauce = async (req, res, next) => {
     if (req.file) {
       // Extraction de l'ID public de l'ancienne image Cloudinary
       const publicId = sauce.imageUrl.split("/").pop().split(".")[0];
+      const publicIdWithFolder = `sauce_images/${publicId}`;
 
       // Suppression de l'ancienne image sur Cloudinary
-      await cloudinary.uploader.destroy(publicId);
+      await cloudinary.uploader.destroy(publicIdWithFolder);
 
       // Création du nouvel objet sauce avec la nouvelle image Cloudinary
       sauceObject = {
@@ -95,9 +96,10 @@ exports.deleteSauce = async (req, res, next) => {
 
     // Récupération de l'ID public de l'image Cloudinary
     const publicId = sauce.imageUrl.split("/").pop().split(".")[0];
+    const publicIdWithFolder = `sauce_images/${publicId}`;
 
     // Suppression de l'image de Cloudinary
-    await cloudinary.uploader.destroy(publicId);
+    await cloudinary.uploader.destroy(publicIdWithFolder);
 
     // Suppression de la sauce dans la base de données
     await Sauce.deleteOne({ _id: req.params.id });
